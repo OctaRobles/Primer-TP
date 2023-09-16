@@ -7,7 +7,19 @@ class Contenedor {
         this.content = []
     }
 
-    async write() {
+    async init() {
+        try {
+			let data = await fs.promises.readFile(this.fileName);
+			this.content = JSON.parse(data);
+			for (const element of this.content) {
+				if (element.id > this.countID) this.countID = element.id;
+			}
+		} catch (error) {
+			console.log('Aún no hay archivo');
+		}
+    }
+
+    async write() { 
         await fs.promises.writeFile(this.fileName, JSON.stringify(this.content))
     }
 
@@ -16,17 +28,18 @@ class Contenedor {
         object["id"] = this.countID 
         this.content.push(object) 
         this.write() 
-        return `El id del objeto añadido es ${this.countID}`
+        return `El id del objeto añadido es ${this.countID}` 
     }
 
-    async getAll() { 
+    getAll() { 
         return this.content
     }
 
-    getById(id) {
+    getById(id) { 
         let result
         if (this.content !== []) {
-            result = this.content.find(x => x.id === id)
+            let array = this.content
+            result = array.find(x => x.id === id)
             if (result === undefined) {
                 result = null
             }
