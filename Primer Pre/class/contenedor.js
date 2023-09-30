@@ -26,7 +26,7 @@ class Contenedor {
 
     save(object) {
         this.countID++ 
-        object["id"] = this.countID 
+        object["id"] = this.countID
         this.content.push(object)
         this.write() 
         return `El id del objeto añadido es ${this.countID}.` 
